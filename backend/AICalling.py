@@ -9,10 +9,10 @@ from dotenv import load_dotenv
 
 
 class SmartHomeCommand(BaseModel):
-  device: Literal["front_door_lock", "thermostat", "unknown"] = Field(
+  device: Literal["front_door_lock", "thermostat", "fan", "unknown"] = Field(
       description="The targeted device"
   )
-  action: Literal["lock", "unlock", "set_temperature", "query_status"] = Field(
+  action: Literal["lock", "unlock", "set_temperature", "fan_on","fan_off","query_status"] = Field(
       description="Action to take"
   )
   value: Optional[int] = Field(
@@ -54,7 +54,7 @@ def callAI(command):
 
 
 def tester():
-    parsed_obj = structured_chain.invoke({"user_command": "Unlock the front door"})
+    parsed_obj = structured_chain.invoke({"user_command": "Turn off the fan"})
 
     print(f"Device: {parsed_obj.device}")
     print(f"Action: {parsed_obj.action}")

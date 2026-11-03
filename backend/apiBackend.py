@@ -47,12 +47,21 @@ async def websocket_endpoint(payload: CommandRequest):
     print(parsed_command)
 
     full_command = callAI(parsed_command)
-    
-    if full_command.action == "unlock":
-        # Manipulation functions unlock
-        print("unlocking")
-        unlockDoor()
-    elif full_command.action == "lock":
-        # Manipulation functions lock
-        print("locking")
-        lockDoor()
+    if(full_command.device == "front_door_lock"):
+        if full_command.action == "unlock":
+            # Manipulation functions unlock
+            print("unlocking")
+            unlockDoor()
+        elif full_command.action == "lock":
+            # Manipulation functions lock
+            print("locking")
+            lockDoor()
+    elif(full_command.device == "fan"):
+        if full_command.action == "fan_on":
+            # Manipulation functions fan on
+            print("unlocking")
+            fanOn()
+        elif full_command.action == "fan_off":
+            # Manipulation functions fan off
+            print("locking")
+            fanOff()
