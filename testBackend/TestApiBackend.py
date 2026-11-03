@@ -45,21 +45,16 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_text(f"Received message: {data}")
 
             # Process raw text into structured intent
-            parsed_command = callAI(data)
-
-            print(f"Device: {parsed_command.device}")
-            print(f"Action: {parsed_command.action}")
-            if parsed_command.value is not None:
-                print(f"Value: {parsed_command.value}")
+            parsed_command = data
 
             
-            if parsed_command.device == "front_door_lock":
-                if parsed_command.action == "unlock":
-                    # Manipulation functions unlock
-                    pass
-                elif parsed_command.action == "lock":
-                    # Manipulation functions lock
-                    pass
+            if parsed_command == "unlock":
+                # Manipulation functions unlock
+                unlockDoor()
+            elif parsed_command == "lock":
+                # Manipulation functions lock
+                lockDoor()
+                    
 
     except WebSocketDisconnect:
         print(f"Client disconnected: {websocket.client}")
