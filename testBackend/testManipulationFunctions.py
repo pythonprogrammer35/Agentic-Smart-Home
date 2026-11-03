@@ -14,7 +14,7 @@ def lockDoor():
     pyautogui.dragTo(687, 823, duration=1.5, button="left")
 
 
-def on_press(key):
+"""def on_press(key):
 
   try:
     # Regular alphanumeric keys (a-z, 0-9)
@@ -43,5 +43,5 @@ def on_release(key):
 
 
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-  listener.join()
+  listener.join()"""
 

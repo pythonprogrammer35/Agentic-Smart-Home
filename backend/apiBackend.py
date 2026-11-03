@@ -2,9 +2,13 @@ from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from manipulationFunctions import *
 from AICalling import callAI
+from pydantic import BaseModel
 
 app = FastAPI()
 
+
+class CommandRequest(BaseModel):
+  command: str
 
 class ConnectionManager:
 
@@ -30,40 +34,25 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
-    print(f"Client connected: {websocket.client}")
+@app.post("/command")
+async def websocket_endpoint(payload: CommandRequest):
+    
+    data = payload
+    print(f"Received: {data}")
 
-    try:
-        while True:
-            # Keeps socket open and blocks until a new message arrives
-            data = await websocket.receive_text()
-            print(f"Received: {data}")
+    # Echo acknowledgment back to the sender
+    # Process raw text into structured intent
+    parsed_command = data.command
 
-            # Echo acknowledgment back to the sender
-            await websocket.send_text(f"Received message: {data}")
+    print(parsed_command)
 
-            # Process raw text into structured intent
-            parsed_command = callAI(data)
-
-            print(f"Device: {parsed_command.device}")
-            print(f"Action: {parsed_command.action}")
-            if parsed_command.value is not None:
-                print(f"Value: {parsed_command.value}")
-
-            
-            if parsed_command.device == "front_door_lock":
-                if parsed_command.action == "unlock":
-                    # Manipulation functions unlock
-                    pass
-                elif parsed_command.action == "lock":
-                    # Manipulation functions lock
-                    pass
-
-    except WebSocketDisconnect:
-        print(f"Client disconnected: {websocket.client}")
-        manager.disconnect(websocket)
-    except Exception as e:
-        print(f"Error occurred: {e}")
-        manager.disconnect(websocket)
+    full_command = callAI(parsed_command)
+    
+    if full_command.action == "unlock":
+        # Manipulation functions unlock
+        print("unlocking")
+        unlockDoor()
+    elif full_command.action == "lock":
+        # Manipulation functions lock
+        print("locking")
+        lockDoor()

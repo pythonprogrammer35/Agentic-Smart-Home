@@ -5,6 +5,7 @@ from google import genai
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableLambda
+from dotenv import load_dotenv
 
 
 class SmartHomeCommand(BaseModel):
@@ -17,7 +18,7 @@ class SmartHomeCommand(BaseModel):
   value: Optional[int] = Field(
       default=None, description="Numeric target value (like degrees)"
   )
-
+load_dotenv()
 client = genai.Client()
 
 def call_gemini(prompt_value):
@@ -61,4 +62,4 @@ def tester():
     if(parsed_obj.value != None):
         print(f"Value: {parsed_obj.value}")
 
-tester()
+#tester()

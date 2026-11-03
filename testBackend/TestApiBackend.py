@@ -1,10 +1,13 @@
 from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
-from manipulationFunctions import *
-from AICalling import callAI
+from testManipulationFunctions import *
+from TestAICalling import callAI
+from pydantic import BaseModel
 
 app = FastAPI()
 
+class CommandRequest(BaseModel):
+  command: str
 
 class ConnectionManager:
 
@@ -30,35 +33,23 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await manager.connect(websocket)
-    print(f"Client connected: {websocket.client}")
+@app.post("/command")
+async def websocket_endpoint(payload: CommandRequest):
+    
+    data = payload
+    print(f"Received: {data}")
 
-    try:
-        while True:
-            # Keeps socket open and blocks until a new message arrives
-            data = await websocket.receive_text()
-            print(f"Received: {data}")
+    # Echo acknowledgment back to the sender
+    # Process raw text into structured intent
+    parsed_command = data
+    print(parsed_command)
+    
+    """if parsed_command == "unlock":
+        # Manipulation functions unlock
+        print("unlocking")
+        unlockDoor()
+    elif parsed_command == "lock":
+        # Manipulation functions lock
+        print("locking")
+        lockDoor()"""
 
-            # Echo acknowledgment back to the sender
-            await websocket.send_text(f"Received message: {data}")
-
-            # Process raw text into structured intent
-            parsed_command = data
-
-            
-            if parsed_command == "unlock":
-                # Manipulation functions unlock
-                unlockDoor()
-            elif parsed_command == "lock":
-                # Manipulation functions lock
-                lockDoor()
-                    
-
-    except WebSocketDisconnect:
-        print(f"Client disconnected: {websocket.client}")
-        manager.disconnect(websocket)
-    except Exception as e:
-        print(f"Error occurred: {e}")
-        manager.disconnect(websocket)
