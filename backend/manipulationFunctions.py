@@ -4,29 +4,29 @@ import time
 
 
 def unlockDoor():
-    pyautogui.moveTo(777, 835)
+    pyautogui.moveTo(525, 734)
     # Click and drag to absolute coordinate (800, 500) over 1.5 seconds
-    pyautogui.dragTo(600, 823, duration=1.5, button="left")
+    pyautogui.dragTo(412, 725, duration=0.5, button="left")
 
 def lockDoor():
-    pyautogui.moveTo(511, 828)
+    pyautogui.moveTo(258, 719)
     # Click and drag to absolute coordinate (800, 500) over 1.5 seconds
-    pyautogui.dragTo(687, 823, duration=1.5, button="left")
+    pyautogui.dragTo(426, 731, duration=0.5, button="left")
 
 def fanOn():
-   pyautogui.click(822, 638)
+   pyautogui.click(567, 501)
    time.sleep(0.5)
-   pyautogui.click(680, 642)
+   pyautogui.click(398, 646)
    time.sleep(0.5)
-   pyautogui.click(732, 888)
+   pyautogui.click(518, 782)
    time.sleep(0.5)
 
 def fanOff():
-   pyautogui.click(831, 636)
+   pyautogui.click(565, 507)
    time.sleep(0.5)
-   pyautogui.click(831, 636)
+   pyautogui.click(565, 507)
    time.sleep(0.5)
-   pyautogui.click(693, 538)
+   pyautogui.click(394, 548)
    time.sleep(0.5)
 
 """def on_press(key):
@@ -58,5 +58,5 @@ def on_release(key):
 
 
 with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-  listener.join()
-"""
+  listener.join()"""
+
